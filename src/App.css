@@ -3,17 +3,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .container > div {
   padding-left: 20px;
   width: calc(100% - 20px);
   margin-bottom: 10px;
+  background-color: whitesmoke;
 }
 
 h2 {
   font-size: 2rem;
+  text-decoration: underline;
 }
 
 input {
@@ -28,10 +29,11 @@ input {
 button {
   margin-right: 10px;
   background-color: white;
+  border: 1px black solid;
   border-radius: 12px;
   font-size: 1.5rem;
   cursor: pointer;
-  user-select: none;
+  outline: none;
 }
 
 button:hover {
@@ -43,6 +45,7 @@ button:hover {
 p {
   font-size: 1.4rem;
   font-weight: bold;
+  color: tomato;
 }
 
 h3 {

@@ -11,3 +11,8 @@
 - useTitle
 - useClick
 - useHover
+- useConfirm
+- usePreventLeave
+- useBeforeLeave
+- useFadeIn
+- useNetwork

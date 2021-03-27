@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import useBeforeLeave from './hooks/useBeforeLeave';
 import useClick from './hooks/useClick';
 import useConfirm from './hooks/useConfirm';
+import useFadeIn from './hooks/useFadeIn';
 import useHover from './hooks/useHover';
 import useInput from './hooks/useInput';
+import useNetwork from './hooks/useNetwork';
 import usePreventLeave from './hooks/usePreventLeave';
 import useTabs from './hooks/useTabs';
 import useTitle from './hooks/useTitle';
@@ -19,12 +22,20 @@ function App() {
   const hoverRef = useHover<HTMLHeadingElement>(() => alert('hover'));
   const { enablePrevent, disablePrevent } = usePreventLeave();
 
+  useBeforeLeave(() => console.log('[useBeforeLeave] 나가지 마세욧 :<'));
+
   const onConfirm = useConfirm(
     'useConfirm 메세지입니다.',
     () => console.log('확인'),
     () => console.log('취소')
   );
 
+  const fadeIn1 = useFadeIn<HTMLParagraphElement>(2, 2);
+  const fadeIn2 = useFadeIn<HTMLParagraphElement>(5, 4);
+
+  const networkStatus = useNetwork((online) => console.log(online ? '온 라 인' : '오 프 라 인'));
+
+  // useTitle Hook
   setTimeout(() => {
     changeTitle('App Title Changed by useTitle');
   }, 2000);
@@ -80,6 +91,17 @@ function App() {
         <h2>usePreventLeave Hook</h2>
         <button onClick={enablePrevent}>Protect</button>
         <button onClick={disablePrevent}>Unprotect</button>
+      </div>
+
+      <div>
+        <h2>useFadeIn Hook</h2>
+        <p {...fadeIn1}>H E L L O ~ !</p>
+        <p {...fadeIn2}>HiHiHi~!~!~!~!~!~!~!</p>
+      </div>
+
+      <div>
+        <h2>useNetwork Hook</h2>
+        <p>{networkStatus ? 'Online' : 'Offline'}</p>
       </div>
     </div>
   );
