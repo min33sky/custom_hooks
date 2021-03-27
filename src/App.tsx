@@ -4,10 +4,12 @@ import useBeforeLeave from './hooks/useBeforeLeave';
 import useClick from './hooks/useClick';
 import useConfirm from './hooks/useConfirm';
 import useFadeIn from './hooks/useFadeIn';
+import useFullscreen from './hooks/useFullscreen';
 import useHover from './hooks/useHover';
 import useInput from './hooks/useInput';
 import useNetwork from './hooks/useNetwork';
 import usePreventLeave from './hooks/usePreventLeave';
+import useScroll from './hooks/useScroll';
 import useTabs from './hooks/useTabs';
 import useTitle from './hooks/useTitle';
 import { filterAtSign, maxLen10 } from './utils';
@@ -35,6 +37,12 @@ function App() {
 
   const networkStatus = useNetwork((online) => console.log(online ? '온 라 인' : '오 프 라 인'));
 
+  const { yPos } = useScroll();
+
+  const { elementRef, triggerFull, exitFull } = useFullscreen<HTMLImageElement>((isFull) =>
+    console.log(isFull ? 'Full' : 'Small')
+  );
+
   // useTitle Hook
   setTimeout(() => {
     changeTitle('App Title Changed by useTitle');
@@ -42,6 +50,13 @@ function App() {
 
   return (
     <div className="container">
+      <div>
+        <h2>useScroll Hook</h2>
+        <p style={{ position: 'fixed', top: 50, color: yPos > 400 ? 'red' : 'blue' }}>
+          u s e S c r o l l
+        </p>
+      </div>
+
       <div>
         <h2>useInput Hook</h2>
         <input
@@ -102,6 +117,18 @@ function App() {
       <div>
         <h2>useNetwork Hook</h2>
         <p>{networkStatus ? 'Online' : 'Offline'}</p>
+      </div>
+
+      <div>
+        <h2>useFullScreen</h2>
+        <img
+          ref={elementRef}
+          alt="fullScreenImg"
+          src="https://images.unsplash.com/photo-1616628950295-d3288bd7a96d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+          onClick={exitFull}
+          style={{ cursor: 'pointer' }}
+        />
+        <button onClick={triggerFull}>Make Fullscreen</button>
       </div>
     </div>
   );
