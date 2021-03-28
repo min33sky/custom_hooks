@@ -16,3 +16,5 @@
 - useBeforeLeave
 - useFadeIn
 - useNetwork
+- useNotification
+- useAxios

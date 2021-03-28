@@ -1,5 +1,7 @@
+import { AxiosRequestConfig } from 'axios';
 import React from 'react';
 import './App.css';
+import useAxios from './hooks/useAxios';
 import useBeforeLeave from './hooks/useBeforeLeave';
 import useClick from './hooks/useClick';
 import useConfirm from './hooks/useConfirm';
@@ -8,12 +10,25 @@ import useFullscreen from './hooks/useFullscreen';
 import useHover from './hooks/useHover';
 import useInput from './hooks/useInput';
 import useNetwork from './hooks/useNetwork';
+import useNotification from './hooks/useNotification';
 import usePreventLeave from './hooks/usePreventLeave';
 import useScroll from './hooks/useScroll';
 import useTabs from './hooks/useTabs';
 import useTitle from './hooks/useTitle';
 import { filterAtSign, maxLen10 } from './utils';
 import { content } from './utils/db';
+
+// ? 객체 리터럴 대신 따로 뺀 이유는 무한 리랜더링이 발생하기 때문에
+const RequestConfig: AxiosRequestConfig = {
+  url: 'https://jsonplaceholder.typicode.com/todos/1',
+};
+
+type ResponseProps = {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+};
 
 function App() {
   const [inputValue1, onChangeInputValue1] = useInput<string>('', maxLen10);
@@ -42,6 +57,10 @@ function App() {
   const { elementRef, triggerFull, exitFull } = useFullscreen<HTMLImageElement>((isFull) =>
     console.log(isFull ? 'Full' : 'Small')
   );
+
+  const onNotification = useNotification('알림창 입니다.', { body: '알림 내용입니다.' });
+
+  const { loading, data, refetch } = useAxios<ResponseProps>(RequestConfig);
 
   // useTitle Hook
   setTimeout(() => {
@@ -129,6 +148,18 @@ function App() {
           style={{ cursor: 'pointer' }}
         />
         <button onClick={triggerFull}>Make Fullscreen</button>
+      </div>
+
+      <div>
+        <h2>useNotification</h2>
+        <button onClick={onNotification}>알림 버튼</button>
+      </div>
+
+      <div>
+        <h2>useAxios</h2>
+        {loading ? '데이터 요청중........' : '데이터 요청 성공!!'}
+        <button onClick={refetch}>데이터 가져오기</button>
+        <p>{data && data.title}</p>
       </div>
     </div>
   );
